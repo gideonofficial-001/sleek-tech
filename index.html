@@ -34,6 +34,44 @@
 <a class="link" href="https://api.whatsapp.com/send?phone=254796928551&text=DEAR SLEEK TECH">Contact Us on WhatsApp</a>
 <br>
 <a class="link" href="https://instagram.com/toxic.deux">Contact Us on Instagram</a>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+// Get config from Vercel environment
+const firebaseConfig = {
+  apiKey: import.meta.env.FIREBASE_API_KEY,
+  authDomain: import.meta.env.FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.FIREBASE_MSG_SENDER,
+  appId: import.meta.env.FIREBASE_APP_ID
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Listen for form submit
+document.querySelector("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("fullname").value;
+    const message = document.getElementById("message").value;
+
+    try {
+        await addDoc(collection(db, "messages"), {
+            fullname: name,
+            message: message,
+            time: new Date()
+        });
+
+        alert("Message sent successfully!");
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to send message.");
+    }
+});
+</script>
 </body>
 </html>
