@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Messages</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #222;
+      color: #fff;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+    #searchBox {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    #login {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    #login input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    #login button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+    }
+    .delete-btn {
+      background: red;
+      color: white;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN PAGE -->
+  <div id="login">
+    <h2>Admin Login</h2>
+    <input type="password" id="adminPass" placeholder="Enter admin password" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- ADMIN PAGE -->
+  <div class="container" id="adminPanel" style="display:none;">
+    <h1>Admin – Message Inbox</h1>
+
+    <input type="text" id="searchBox" placeholder="Search messages..." onkeyup="filterMessages()" />
+
+    <table id="messagesTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Message</th>
+          <th>Timestamp</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBUKZRg9NIwVG-68aiaxeCsIStC6UAtn4I",
+      authDomain: "sleek-tech-db.firebaseapp.com",
+      projectId: "sleek-tech-db",
+      storageBucket: "sleek-tech-db.firebasestorage.app",
+      messagingSenderId: "1084439747120",
+      appId: "1:1084439747120:web:5cc1c572e314ded2a92bf5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const tableBody = document.querySelector("#messagesTable tbody");
+
+    // LIVE UPDATES
+    onSnapshot(collection(db, "messages"), (snapshot) => {
+      tableBody.innerHTML = "";
+
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${docSnap.id}</td>
+          <td>${data.name || "-"}</td>
+          <td>${data.phone || "-"}</td>
+          <td>${data.message || ""}</td>
+          <td>${data.timestamp || ""}</td>
+          <td><button class="delete-btn" onclick="deleteMessage('${docSnap.id}')">Delete</button></td>
+        `;
+
+        tableBody.appendChild(row);
+      });
+    });
+
+    // DELETE MESSAGE
+    window.deleteMessage = async function(id) {
+      await deleteDoc(doc(db, "messages", id));
+      alert("Message deleted!");
+    };
+
+    // SEARCH FILTER
+    window.filterMessages = function() {
+      const filter = document.getElementById("searchBox").value.toLowerCase();
+      const rows = tableBody.getElementsByTagName("tr");
+
+      for (let i = 0; i < rows.length; i++) {
+        const rowText = rows[i].innerText.toLowerCase();
+        rows[i].style.display = rowText.includes(filter) ? "" : "none";
+      }
+    };
+
+    // SIMPLE ADMIN LOGIN
+    window.login = function() {
+      const pass = document.getElementById("adminPass").value;
+
+      if (pass === "sleekadmin123") {
+        document.getElementById("login").style.display = "none";
+        document.getElementById("adminPanel").style.display = "block";
+      } else {
+        alert("Wrong password!");
+      }
+    }
+  </script>
+</body>
+</html>
+
