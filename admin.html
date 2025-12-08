@@ -1,170 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - Messages</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background: #fff;
-    }
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #ddd;
-      text-align: left;
-    }
-    th {
-      background: #222;
-      color: #fff;
-    }
-    .container {
-      max-width: 1000px;
-      margin: auto;
-    }
-    #searchBox {
-      width: 100%;
-      padding: 12px;
-      margin-top: 20px;
-      font-size: 16px;
-    }
-    #login {
-      max-width: 400px;
-      margin: 100px auto;
-      padding: 20px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    #login input {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-    }
-    #login button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 20px;
-    }
-    .delete-btn {
-      background: red;
-      color: white;
-      padding: 6px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Messages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f3;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+        .refresh {
+            display: block;
+            margin: auto;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            width: 200px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .refresh:hover {
+            background: #1e7e34;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- LOGIN PAGE -->
-  <div id="login">
-    <h2>Admin Login</h2>
-    <input type="password" id="adminPass" placeholder="Enter admin password" />
-    <button onclick="login()">Login</button>
-  </div>
+<h2>Admin Panel – Message Inbox</h2>
 
-  <!-- ADMIN PAGE -->
-  <div class="container" id="adminPanel" style="display:none;">
-    <h1>Admin – Message Inbox</h1>
+<button class="refresh" onclick="loadMessages()">Refresh Messages</button>
 
-    <input type="text" id="searchBox" placeholder="Search messages..." onkeyup="filterMessages()" />
-
-    <table id="messagesTable">
-      <thead>
+<table>
+    <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Phone</th>
-          <th>Message</th>
-          <th>Timestamp</th>
-          <th>Action</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th>Time</th>
         </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+    </thead>
+    <tbody id="messageTable"></tbody>
+</table>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-    import { getFirestore, collection, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+<script>
+async function loadMessages() {
+    const res = await fetch("/api/messages");
+    const messages = await res.json();
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyBUKZRg9NIwVG-68aiaxeCsIStC6UAtn4I",
-      authDomain: "sleek-tech-db.firebaseapp.com",
-      projectId: "sleek-tech-db",
-      storageBucket: "sleek-tech-db.firebasestorage.app",
-      messagingSenderId: "1084439747120",
-      appId: "1:1084439747120:web:5cc1c572e314ded2a92bf5"
-    };
+    const table = document.getElementById("messageTable");
+    table.innerHTML = "";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    const tableBody = document.querySelector("#messagesTable tbody");
-
-    // LIVE UPDATES
-    onSnapshot(collection(db, "messages"), (snapshot) => {
-      tableBody.innerHTML = "";
-
-      snapshot.forEach((docSnap) => {
-        const data = docSnap.data();
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-          <td>${docSnap.id}</td>
-          <td>${data.name || "-"}</td>
-          <td>${data.phone || "-"}</td>
-          <td>${data.message || ""}</td>
-          <td>${data.timestamp || ""}</td>
-          <td><button class="delete-btn" onclick="deleteMessage('${docSnap.id}')">Delete</button></td>
+    messages.forEach(msg => {
+        const row = `
+            <tr>
+                <td>${msg.name}</td>
+                <td>${msg.phone}</td>
+                <td>${msg.email || "-"}</td>
+                <td>${msg.message}</td>
+                <td>${new Date(msg.timestamp).toLocaleString()}</td>
+            </tr>
         `;
-
-        tableBody.appendChild(row);
-      });
+        table.innerHTML += row;
     });
+}
 
-    // DELETE MESSAGE
-    window.deleteMessage = async function(id) {
-      await deleteDoc(doc(db, "messages", id));
-      alert("Message deleted!");
-    };
+// Auto-load on page open
+loadMessages();
+</script>
 
-    // SEARCH FILTER
-    window.filterMessages = function() {
-      const filter = document.getElementById("searchBox").value.toLowerCase();
-      const rows = tableBody.getElementsByTagName("tr");
-
-      for (let i = 0; i < rows.length; i++) {
-        const rowText = rows[i].innerText.toLowerCase();
-        rows[i].style.display = rowText.includes(filter) ? "" : "none";
-      }
-    };
-
-    // SIMPLE ADMIN LOGIN
-    window.login = function() {
-      const pass = document.getElementById("adminPass").value;
-
-      if (pass === "SLEEK") {
-        document.getElementById("login").style.display = "none";
-        document.getElementById("adminPanel").style.display = "block";
-      } else {
-        alert("Wrong password!");
-      }
-    }
-  </script>
 </body>
 </html>
-
