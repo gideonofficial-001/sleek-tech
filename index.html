@@ -3,88 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Form</title>
+    <title>Admin - Messages</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f5f5f5;
+            background: #eef2f3;
             padding: 20px;
         }
-        .container {
-            max-width: 450px;
-            margin: auto;
+        h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
             background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 5px;
+        th, td {
             border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
         }
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
+        th {
             background: #007bff;
             color: white;
+        }
+        tr:nth-child(even) {
+            background: #f8f8f8;
+        }
+        .refresh {
+            display: block;
+            margin: auto;
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            width: 200px;
+            background: #28a745;
+            color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
         }
-        button:hover {
-            background: #0056b3;
-        }
-        .success {
-            color: green;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
-            font-weight: bold;
+        .refresh:hover {
+            background: #1e7e34;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Send Us a Message</h2>
-    <input id="name" type="text" placeholder="Your Name" required>
-    <input id="phone" type="text" placeholder="Phone Number (with country code)" required>
-    <input id="email" type="email" placeholder="Email Address">
-    <textarea id="message" placeholder="Type your message..." rows="4" required></textarea>
-    <button onclick="sendMessage()">Send Message</button>
-    <div id="feedback"></div>
-</div>
+<h2>Admin Panel – Message Inbox</h2>
+
+<button class="refresh" onclick="loadMessages()">Refresh Messages</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody id="messageTable"></tbody>
+</table>
 
 <script>
-async function sendMessage() {
-    const data = {
-        name: document.getElementById("name").value,
-        phone: document.getElementById("phone").value,
-        email: document.getElementById("email").value,
-        message: document.getElementById("message").value
-    };
+async function loadMessages() {
+    const res = await fetch("/api/messages");
+    const messages = await res.json();
 
-    const res = await fetch("/api/messages", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
+    const table = document.getElementById("messageTable");
+    table.innerHTML = "";
+
+    messages.forEach(msg => {
+        const row = `
+            <tr>
+                <td>${msg.name}</td>
+                <td>${msg.phone}</td>
+                <td>${msg.email || "-"}</td>
+                <td>${msg.message}</td>
+                <td>${new Date(msg.timestamp).toLocaleString()}</td>
+            </tr>
+        `;
+        table.innerHTML += row;
     });
-
-    const feedback = document.getElementById("feedback");
-
-    if (res.ok) {
-        feedback.innerHTML = "<p class='success'>Message sent successfully.</p>";
-    } else {
-        feedback.innerHTML = "<p class='error'>Failed to send message.</p>";
-    }
 }
+
+// Auto-load on page open
+loadMessages();
 </script>
 
 </body>
