@@ -2,185 +2,87 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-        }
-        .container {
-            max-width: 450px;
-            margin: auto;
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #0056b3;
-        }
-        .success {
-            color: green;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-    </style>
+    <title>Sleek Tech Incorporated</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-    <h2>Send Us a Message</h2>
-    <input id="name" type="text" placeholder="Your Name" required>
-    <input id="phone" type="text" placeholder="Phone Number (with country code)" required>
-    <input id="email" type="email" placeholder="Email Address">
-    <textarea id="message" placeholder="Type your message..." rows="4" required></textarea>
-    <button onclick="sendMessage()">Send Message</button>
-    <div id="feedback"></div>
+<!-- Floating Snow Particles -->
+<div id="snow"></div>
+
+<!-- Header Section -->
+<div class="header-box">
+    <img src="https://files.catbox.moe/gsxpsu.jpg" alt="SLEEK™" class="circle">
+    <h1 id="head">SLEEK TECH</h1>
 </div>
 
-<script>
-async function sendMessage() {
-    const data = {
-        name: document.getElementById("name").value,
-        phone: document.getElementById("phone").value,
-        email: document.getElementById("email").value,
-        message: document.getElementById("message").value
-    };
+<h2 id="intro">Welcome to Sleek Tech Incorporated. We offer the following services:</h2>
 
-    const res = await fetch("/api/messages", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
-    });
+<div class="content">
+    <ol>
+        <li>WhatsApp bot deployment services</li>
+        <li>Panel merchandise at affordable costs</li>
+        <li>Heroku billing and invites</li>
+        <li>VPN files for all networks</li>
+        <li>Social media likes and followers boosts</li>
+        <li>Any other tech-related services</li>
+    </ol>
+</div>
 
-    const feedback = document.getElementById("feedback");
+<!-- Contact Form -->
+<form class="contact-box">
+    <label for="fullname">Full Name</label>
+    <input id="fullname" type="text" placeholder="Enter at least two names" required>
 
-    if (res.ok) {
-        feedback.innerHTML = "<p class='success'>Message sent successfully.</p>";
-    } else {
-        feedback.innerHTML = "<p class='error'>Failed to send message.</p>";
+    <label for="message">Your Message</label>
+    <textarea id="message" rows="4" placeholder="Type your message here..." required></textarea>
+
+    <button type="submit">Send</button>
+</form>
+
+<br>
+
+<!-- Contact Links -->
+<a class="link" href="https://api.whatsapp.com/send?phone=254796928551&text=DEAR SLEEK TECH">Contact Us on WhatsApp</a>
+<a class="link" href="https://instagram.com/toxic.deux">Contact Us on Instagram</a>
+
+<!-- Firebase Script -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: import.meta.env.FIREBASE_API_KEY,
+  authDomain: import.meta.env.FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.FIREBASE_MSG_SENDER,
+  appId: import.meta.env.FIREBASE_APP_ID
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Submit Listener
+document.querySelector("form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("fullname").value;
+    const message = document.getElementById("message").value;
+
+    try {
+        await addDoc(collection(db, "messages"), {
+            fullname: name,
+            message: message,
+            time: new Date()
+        });
+
+        alert("Message sent successfully!");
+    } catch (error) {
+        console.error(error);
+        alert("Failed to send message.");
     }
-}
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Messages</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #eef2f3;
-            padding: 20px;
-        }
-        h2 {
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            background: white;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background: #007bff;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background: #f8f8f8;
-        }
-        .refresh {
-            display: block;
-            margin: auto;
-            margin-bottom: 20px;
-            padding: 10px 15px;
-            width: 200px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .refresh:hover {
-            background: #1e7e34;
-        }
-    </style>
-</head>
-<body>
-
-<h2>Admin Panel – Message Inbox</h2>
-
-<button class="refresh" onclick="loadMessages()">Refresh Messages</button>
-
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Message</th>
-            <th>Time</th>
-        </tr>
-    </thead>
-    <tbody id="messageTable"></tbody>
-</table>
-
-<script>
-async function loadMessages() {
-    const res = await fetch("/api/messages");
-    const messages = await res.json();
-
-    const table = document.getElementById("messageTable");
-    table.innerHTML = "";
-
-    messages.forEach(msg => {
-        const row = `
-            <tr>
-                <td>${msg.name}</td>
-                <td>${msg.phone}</td>
-                <td>${msg.email || "-"}</td>
-                <td>${msg.message}</td>
-                <td>${new Date(msg.timestamp).toLocaleString()}</td>
-            </tr>
-        `;
-        table.innerHTML += row;
-    });
-}
-
-// Auto-load on page open
-loadMessages();
+});
 </script>
 
 </body>
