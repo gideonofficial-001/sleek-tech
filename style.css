@@ -84,3 +84,47 @@ th, td {
     background: rgba(255,255,255,0.05);
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
+
+.header-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+/* Logo */
+.circle {
+    border-radius: 50%;
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+}
+
+/* Title */
+#head {
+    font-family: "Pacifico", cursive;
+    font-size: 42px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Intro Banner */
+#intro {
+    font-family: cursive;
+    text-align: center;
+    color: magenta;
+    background-color: pink;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* Service List */
+.content {
+    background-color: rgba(255, 255, 224, 0.85);
+    padding: 15px;
+    margin: 10px auto;
+    border-radius: 10px;
+    max-width: 700px;
+}
