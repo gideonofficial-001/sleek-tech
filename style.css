@@ -1,141 +1,86 @@
-/* Global Page Styling */
 body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
     margin: 0;
-    background: url("https://files.catbox.moe/kyi4l8.jpg");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-}
-
-/* Header Layout */
-.header-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-/* Logo */
-.circle {
-    border-radius: 50%;
-    width: 140px;
-    height: 140px;
-    object-fit: cover;
-}
-
-/* Title */
-#head {
-    font-family: "Pacifico", cursive;
-    font-size: 42px;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Intro Banner */
-#intro {
-    font-family: cursive;
-    text-align: center;
-    color: magenta;
-    background-color: pink;
-    font-weight: bold;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-/* Service List */
-.content {
-    background-color: rgba(255, 255, 224, 0.85);
-    padding: 15px;
-    margin: 10px auto;
-    border-radius: 10px;
-    max-width: 700px;
-}
-
-/* Contact Form */
-.contact-box {
-    width: 100%;
-    max-width: 400px;
-    margin: 20px auto;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-}
-
-.contact-box input,
-.contact-box textarea {
-    padding: 10px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border: 2px solid #000;
-    border-radius: 6px;
-}
-
-.contact-box button {
-    padding: 10px;
-    background: deepskyblue;
-    border: none;
-    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    background: #0A0F24;
     color: white;
-    font-size: 16px;
-    cursor: pointer;
+    overflow-x: hidden;
 }
 
-.contact-box button:hover {
-    background: dodgerblue;
-}
-
-/* Contact Links */
-.link {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-    color: blue;
-    text-align: center;
-    text-decoration: none;
-}
-
-.link:hover {
-    text-decoration: underline;
-}
-
-/* ----------------------------- */
-/* ❄ Floating Snow Particles ❄ */
-/* ----------------------------- */
-#snow {
-    pointer-events: none;
+/* Particle background */
+#particles {
     position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
     width: 100%;
-    overflow: hidden;
+    height: 100%;
+    background: radial-gradient(circle, #111, #000);
+    z-index: -1;
 }
 
-#snow::before,
-#snow::after {
-    content: "";
+/* Particle styling */
+.particle {
     position: absolute;
-    top: -10%;
-    width: 200%;
-    height: 200%;
-    background-image: radial-gradient(white 2px, transparent 2px);
-    background-size: 15px 15px;
-    animation: snowfall 12s linear infinite;
-    opacity: 0.8;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float 10s linear infinite;
 }
 
-#snow::after {
-    animation-duration: 20s;
-    opacity: 0.5;
+@keyframes float {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
 }
 
-@keyframes snowfall {
-    from { transform: translateY(-30%); }
-    to { transform: translateY(30%); }
+/* Form container */
+.container, .admin-container {
+    width: 90%;
+    max-width: 500px;
+    margin: 80px auto;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+h1 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Inputs */
+input, textarea, button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+}
+
+textarea {
+    height: 120px;
+}
+
+button {
+    background: #4CAF50;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+/* Admin table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    background: rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
