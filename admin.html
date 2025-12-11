@@ -34,13 +34,13 @@
     const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
 
     onSnapshot(q, (snapshot) => {
-        messagesTable.innerHTML = ""; // clear table
+        messagesTable.innerHTML = "";
 
         snapshot.forEach(doc => {
             const data = doc.data();
             const date = data.createdAt ? data.createdAt.toDate().toLocaleString() : "—";
 
-            const row = `
+            messagesTable.innerHTML += `
                 <tr>
                     <td>${data.name}</td>
                     <td>${data.email}</td>
@@ -48,7 +48,6 @@
                     <td>${date}</td>
                 </tr>
             `;
-            messagesTable.innerHTML += row;
         });
     });
 </script>
