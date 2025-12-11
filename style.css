@@ -4,6 +4,12 @@ body {
     background: #0A0F24;
     color: white;
     overflow-x: hidden;
+    padding: 0;
+    background-image: url("https://files.catbox.moe/do5w4p.jpg");
+    background-size: cover;       /* makes it fill the screen */
+    background-position: center;  /* centers the image */
+    background-repeat: no-repeat; /* stops repeating */
+    background-attachment: fixed; /* optional: keeps it still while scrolling */
 }
 
 /* Particle background */
