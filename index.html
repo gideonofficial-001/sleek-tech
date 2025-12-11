@@ -2,89 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sleek Tech Incorporated</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Message</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Floating Snow Particles -->
-<div id="snow"></div>
+<div id="particles"></div>
 
-<!-- Header Section -->
-<div class="header-box">
-    <img src="https://files.catbox.moe/gsxpsu.jpg" alt="SLEEK™" class="circle">
-    <h1 id="head">SLEEK TECH</h1>
+<div class="container">
+    <h1>Contact Form</h1>
+    <form id="messageForm">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="email" id="email" placeholder="Your Email" required>
+        <textarea id="message" placeholder="Your Message..." required></textarea>
+        <button type="submit">Send</button>
+    </form>
+
+    <p id="status"></p>
 </div>
 
-<h2 id="intro">Welcome to Sleek Tech Incorporated. We offer the following services:</h2>
-
-<div class="content">
-    <ol>
-        <li>WhatsApp bot deployment services</li>
-        <li>Panel merchandise at affordable costs</li>
-        <li>Heroku billing and invites</li>
-        <li>VPN files for all networks</li>
-        <li>Social media likes and followers boosts</li>
-        <li>Any other tech-related services</li>
-    </ol>
-</div>
-
-<!-- Contact Form -->
-<form class="contact-box">
-    <label for="fullname">Full Name</label>
-    <input id="fullname" type="text" placeholder="Enter at least two names" required>
-
-    <label for="message">Your Message</label>
-    <textarea id="message" rows="4" placeholder="Type your message here..." required></textarea>
-
-    <button type="submit">Send</button>
-</form>
-
-<br>
-
-<!-- Contact Links -->
-<a class="link" href="https://api.whatsapp.com/send?phone=254796928551&text=DEAR SLEEK TECH">Contact Us on WhatsApp</a>
-<a class="link" href="https://instagram.com/toxic.deux">Contact Us on Instagram</a>
-
-<!-- Firebase Script -->
 <script type="module">
-import { firebaseConfig } from "./firebase.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { db } from "./firebase.js";
+    import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: import.meta.env.FIREBASE_API_KEY,
-  authDomain: import.meta.env.FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.FIREBASE_MSG_SENDER,
-  appId: import.meta.env.FIREBASE_APP_ID
-};
+    const form = document.getElementById("messageForm");
+    const status = document.getElementById("status");
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-// Submit Listener
-document.querySelector("form").addEventListener("submit", async (e) => {
-    e.preventDefault();
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const message = document.getElementById("message").value.trim();
 
-    const name = document.getElementById("fullname").value;
-    const message = document.getElementById("message").value;
+        try {
+            await addDoc(collection(db, "messages"), {
+                name,
+                email,
+                message,
+                createdAt: serverTimestamp()
+            });
 
-    try {
-        await addDoc(collection(db, "messages"), {
-            fullname: name,
-            message: message,
-            time: new Date()
-        });
-
-        alert("Message sent successfully!");
-    } catch (error) {
-        console.error(error);
-        alert("Failed to send message.");
-    }
-});
+            status.textContent = "Message sent successfully!";
+            form.reset();
+        } catch (error) {
+            status.textContent = "Failed to send message.";
+        }
+    });
 </script>
+
+<script src="particles.js"></script>
 
 </body>
 </html>
