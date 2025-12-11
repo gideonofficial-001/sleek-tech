@@ -2,94 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Messages</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #eef2f3;
-            padding: 20px;
-        }
-        h2 {
-            text-align: center;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            background: white;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background: #007bff;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background: #f8f8f8;
-        }
-        .refresh {
-            display: block;
-            margin: auto;
-            margin-bottom: 20px;
-            padding: 10px 15px;
-            width: 200px;
-            background: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .refresh:hover {
-            background: #1e7e34;
-        }
-    </style>
+    <title>Sleek Tech Admin Panel</title>
+    <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
-<h2>Admin Panel – Message Inbox</h2>
+<h1 class="title">Admin Dashboard</h1>
 
-<button class="refresh" onclick="loadMessages()">Refresh Messages</button>
+<div class="table-box">
+    <table>
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Message</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody id="messagesTable"></tbody>
+    </table>
+</div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Message</th>
-            <th>Time</th>
-        </tr>
-    </thead>
-    <tbody id="messageTable"></tbody>
-</table>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-<script>
+const firebaseConfig = {
+  apiKey: import.meta.env.FIREBASE_API_KEY,
+  authDomain: import.meta.env.FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.FIREBASE_MSG_SENDER,
+  appId: import.meta.env.FIREBASE_APP_ID
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 async function loadMessages() {
-    const res = await fetch("/api/messages");
-    const messages = await res.json();
-
-    const table = document.getElementById("messageTable");
+    const table = document.getElementById("messagesTable");
     table.innerHTML = "";
 
-    messages.forEach(msg => {
+    const q = query(collection(db, "messages"), orderBy("time", "desc"));
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach(doc => {
+        const data = doc.data();
+
         const row = `
             <tr>
-                <td>${msg.name}</td>
-                <td>${msg.phone}</td>
-                <td>${msg.email || "-"}</td>
-                <td>${msg.message}</td>
-                <td>${new Date(msg.timestamp).toLocaleString()}</td>
+                <td>${data.fullname}</td>
+                <td>${data.message}</td>
+                <td>${new Date(data.time.seconds * 1000).toLocaleString()}</td>
             </tr>
         `;
         table.innerHTML += row;
     });
 }
 
-// Auto-load on page open
 loadMessages();
 </script>
 
