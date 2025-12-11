@@ -25,15 +25,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: import.meta.env.FIREBASE_API_KEY,
-  authDomain: import.meta.env.FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.FIREBASE_MSG_SENDER,
-  appId: import.meta.env.FIREBASE_APP_ID
-};
+import { firebaseConfig } from "./firebase.js";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -47,12 +39,13 @@ async function loadMessages() {
 
     snapshot.forEach(doc => {
         const data = doc.data();
+        const date = data.time?.seconds ? new Date(data.time.seconds * 1000) : new Date();
 
         const row = `
             <tr>
                 <td>${data.fullname}</td>
                 <td>${data.message}</td>
-                <td>${new Date(data.time.seconds * 1000).toLocaleString()}</td>
+                <td>${date.toLocaleString()}</td>
             </tr>
         `;
         table.innerHTML += row;
