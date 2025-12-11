@@ -2,59 +2,58 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sleek Tech Admin Panel</title>
-    <link rel="stylesheet" href="admin.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin – Messages</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1 class="title">Admin Dashboard</h1>
+<div id="particles"></div>
 
-<div class="table-box">
+<div class="admin-container">
+    <h1>Messages Dashboard</h1>
     <table>
         <thead>
             <tr>
-                <th>Full Name</th>
+                <th>Name</th>
+                <th>Email</th>
                 <th>Message</th>
-                <th>Time</th>
+                <th>Date</th>
             </tr>
         </thead>
-        <tbody id="messagesTable"></tbody>
+        <tbody id="messages"></tbody>
     </table>
 </div>
 
 <script type="module">
-import { firebaseConfig } from "./firebase.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-import { firebaseConfig } from "./firebase.js";
+    import { db } from "./firebase.js";
+    import { collection, onSnapshot, orderBy, query } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    const messagesTable = document.getElementById("messages");
 
-async function loadMessages() {
-    const table = document.getElementById("messagesTable");
-    table.innerHTML = "";
+    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
 
-    const q = query(collection(db, "messages"), orderBy("time", "desc"));
-    const snapshot = await getDocs(q);
+    onSnapshot(q, (snapshot) => {
+        messagesTable.innerHTML = ""; // clear table
 
-    snapshot.forEach(doc => {
-        const data = doc.data();
-        const date = data.time?.seconds ? new Date(data.time.seconds * 1000) : new Date();
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const date = data.createdAt ? data.createdAt.toDate().toLocaleString() : "—";
 
-        const row = `
-            <tr>
-                <td>${data.fullname}</td>
-                <td>${data.message}</td>
-                <td>${date.toLocaleString()}</td>
-            </tr>
-        `;
-        table.innerHTML += row;
+            const row = `
+                <tr>
+                    <td>${data.name}</td>
+                    <td>${data.email}</td>
+                    <td>${data.message}</td>
+                    <td>${date}</td>
+                </tr>
+            `;
+            messagesTable.innerHTML += row;
+        });
     });
-}
-
-loadMessages();
 </script>
+
+<script src="particles.js"></script>
 
 </body>
 </html>
