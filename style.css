@@ -58,7 +58,7 @@ body {
 #head {
     font-family: "Pacifico", cursive;
     font-size: 42px;
-    color: #fff;
+    color: black;
 }
 
 /* Intro Section */
@@ -74,7 +74,7 @@ body {
 
 /* Content List */
 .content {
-    background-color: rgba(255,255,224,0.85);
+    background-color: pink;
     padding: 15px;
     margin: 10px auto;
     border-radius: 10px;
