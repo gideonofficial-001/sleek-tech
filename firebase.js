@@ -2,12 +2,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
-  authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MSG_SENDER,
-  appId: import.meta.env.PUBLIC_FIREBASE_APP_ID
+  apiKey: "AIzaSyBUKZRg9NIwVG-68aiaxeCsIStC6UAtn4I",
+  authDomain: "sleek-tech-db.firebaseapp.com",
+  projectId: "sleek-tech-db",
+  storageBucket: "sleek-tech-db.firebasestorage.app",
+  messagingSenderId: "1084439747120",
+  appId: "1:1084439747120:web:5cc1c572e314ded2a92bf5"
 };
 
 const app = initializeApp(firebaseConfig);
