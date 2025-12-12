@@ -10,8 +10,5 @@ const firebaseConfig = {
   appId: import.meta.env.PUBLIC_FIREBASE_APP_ID
 };
 
-// IMPORTANT: Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// IMPORTANT: Export Firestore
 export const db = getFirestore(app);
