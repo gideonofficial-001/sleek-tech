@@ -1,24 +1,25 @@
+/* Global Body Styles */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #0A0F24;
     color: white;
     overflow-x: hidden;
-    padding: 0;
     background-image: url("https://files.catbox.moe/do5w4p.jpg");
-    background-size: cover;       /* makes it fill the screen */
-    background-position: center;  /* centers the image */
-    background-repeat: no-repeat; /* stops repeating */
-    background-attachment: fixed; /* optional: keeps it still while scrolling */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
-/* Particle background */
+/* Particle Overlay */
 #particles {
     position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, #111, #000);
-    z-index: -1;
+    pointer-events: none;
+    z-index: 0;
 }
 
 /* Particle styling */
@@ -28,7 +29,7 @@ body {
     height: 6px;
     background: white;
     border-radius: 50%;
-    opacity: 0.6;
+    opacity: 0.7;
     animation: float 10s linear infinite;
 }
 
@@ -37,69 +38,16 @@ body {
     to { transform: translateY(-10vh); }
 }
 
-/* Form container */
-.container, .admin-container {
-    width: 90%;
-    max-width: 500px;
-    margin: 80px auto;
-    padding: 20px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 12px;
-    backdrop-filter: blur(6px);
-    box-shadow: 0 0 20px rgba(0,0,0,0.4);
-}
-
-h1 {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* Inputs */
-input, textarea, button {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 8px;
-    border: none;
-}
-
-textarea {
-    height: 120px;
-}
-
-button {
-    background: #4CAF50;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background: #45a049;
-}
-
-/* Admin table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    padding: 10px;
-    background: rgba(255,255,255,0.05);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
+/* Header */
 .header-box {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 15px;
-    margin: 20px 0;
+    margin: 25px 0;
+    z-index: 1;
 }
 
-/* Logo */
 .circle {
     border-radius: 50%;
     width: 140px;
@@ -107,30 +55,80 @@ th, td {
     object-fit: cover;
 }
 
-/* Title */
 #head {
     font-family: "Pacifico", cursive;
     font-size: 42px;
-    font-weight: bold;
-    color: #333;
+    color: #fff;
 }
 
-/* Intro Banner */
+/* Intro Section */
 #intro {
-    font-family: cursive;
     text-align: center;
+    font-family: cursive;
     color: magenta;
-    background-color: pink;
-    font-weight: bold;
+    background-color: rgba(255, 192, 203, 0.8);
     padding: 10px;
     border-radius: 10px;
+    margin: 0 10px 20px 10px;
 }
 
-/* Service List */
+/* Content List */
 .content {
-    background-color: rgba(255, 255, 224, 0.85);
+    background-color: rgba(255,255,224,0.85);
     padding: 15px;
     margin: 10px auto;
     border-radius: 10px;
     max-width: 700px;
+    z-index: 1;
+}
+
+/* Form Styles */
+.container {
+    width: 90%;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    z-index: 1;
+}
+
+input, textarea, button {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: none;
+}
+
+textarea {
+    min-height: 110px;
+}
+
+button {
+    background: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+/* Links */
+.link {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: blue;
+    font-weight: bold;
+    text-decoration: none;
+    z-index: 1;
+}
+
+.link:hover {
+    text-decoration: underline;
 }
