@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign In | Sleek Tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+
+  <div class="auth-box card">
+    <h2>Welcome Back</h2>
+    <p>Choose how you want to continue</p>
+
+    <button class="auth-btn email" onclick="location.href='login.html'">
+      Sign in with Email
+    </button>
+
+    <button class="auth-btn google" id="googleBtn">
+      Continue with Google
+    </button>
+
+    <button class="auth-btn github" id="githubBtn">
+      Continue with GitHub
+    </button>
+
+    <p class="divider">or</p>
+
+    <button class="auth-btn create" onclick="location.href='account.html'">
+      Create an Account
+    </button>
+  </div>
+
+<script type="module">
+  import { auth, db } from "./firebase.js";
+  import {
+    GoogleAuthProvider,
+    GithubAuthProvider,
+    signInWithPopup
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    doc,
+    getDoc,
+    setDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const googleBtn = document.getElementById("googleBtn");
+  const githubBtn = document.getElementById("githubBtn");
+
+  googleBtn.addEventListener("click", async () => {
+    try {
+      const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      const user = result.user;
+
+      const ref = doc(db, "users", user.uid);
+      if (!(await getDoc(ref)).exists()) {
+        await setDoc(ref, {
+          username: user.displayName?.toLowerCase().replace(/\s+/g, "_"),
+          email: user.email,
+          provider: "google",
+          createdAt: serverTimestamp()
+        });
+      }
+
+      window.location.href = "home.html";
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
+  githubBtn.addEventListener("click", async () => {
+    try {
+      const result = await signInWithPopup(auth, new GithubAuthProvider());
+      const user = result.user;
+
+      const ref = doc(db, "users", user.uid);
+      if (!(await getDoc(ref)).exists()) {
+        await setDoc(ref, {
+          username: user.displayName || "github_user",
+          email: user.email,
+          provider: "github",
+          createdAt: serverTimestamp()
+        });
+      }
+
+      window.location.href = "home.html";
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+</script>
+
+</body>
+</html>
