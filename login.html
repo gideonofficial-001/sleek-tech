@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Sleek Tech</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+<div class="login-box card">
+  <h2>Welcome Back</h2>
+  <p>Login to access your dashboard</p>
+
+  <form id="loginForm">
+    <input type="email" placeholder="Email" required>
+    <input type="password" placeholder="Password" required>
+    <button type="submit">Login</button>
+  </form>
+
+  <p class="notice">
+    Didn’t receive the verification email?<br>
+    Check your <strong>Spam</strong> folder.
+  </p>
+
+  <p class="small">
+    No account? <a href="account.html">Create one</a>
+  </p>
+</div>
+
+<script type="module">
+  import { auth } from "./firebase.js";
+  import {
+    signInWithEmailAndPassword,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const form = document.getElementById("loginForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = form.querySelector("input[type='email']").value.trim();
+    const password = form.querySelector("input[type='password']").value;
+
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, password);
+
+      if (!cred.user.emailVerified) {
+        alert("Please verify your email before logging in.");
+        await signOut(auth);
+        return;
+      }
+
+      window.location.href = "home.html";
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+</script>
+
+</body>
+</html>
