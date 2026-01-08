@@ -1,0 +1,60 @@
+.auth-box {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+  text-align: center;
+}
+
+.auth-box h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.auth-box p {
+  color: #9ca3af;
+  margin-bottom: 1.8rem;
+  font-size: 0.95rem;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 10px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 0.8rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.auth-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+.email {
+  background: #2563eb;
+  color: #fff;
+}
+
+.google {
+  background: #ffffff;
+  color: #111827;
+}
+
+.github {
+  background: #111827;
+  color: #f9fafb;
+}
+
+.create {
+  background: transparent;
+  border: 1px solid #2563eb;
+  color: #93c5fd;
+}
+
+.divider {
+  margin: 1.2rem 0;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
