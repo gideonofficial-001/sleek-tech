@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sleek Tech | Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="particles.css">
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+
+<div id="particles"></div>
+
+<div class="dashboard card">
+  <h1>Welcome, <span id="username">User</span> 👋</h1>
+  <p>You are logged in to Sleek Tech Incorporated.</p>
+
+  <button id="logout">Logout</button>
+</div>
+
+<script type="module">
+  import { auth, db } from "./firebase.js";
+  import { onAuthStateChanged, signOut }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { doc, getDoc }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const usernameEl = document.getElementById("username");
+  const logoutBtn = document.getElementById("logout");
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    const snap = await getDoc(doc(db, "users", user.uid));
+    if (snap.exists()) {
+      usernameEl.textContent = snap.data().username;
+    }
+  });
+
+  logoutBtn.addEventListener("click", async () => {
+    await signOut(auth);
+    window.location.href = "login.html";
+  });
+</script>
+
+<script src="particles.js"></script>
+</body>
+</html>
