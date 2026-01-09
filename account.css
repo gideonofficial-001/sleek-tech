@@ -1,0 +1,75 @@
+.create-box {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+}
+
+.create-box h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.toggle {
+  font-size: 0.85rem;
+  color: #cbd5f5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.strength {
+  margin-bottom: 12px;
+}
+
+.strength-bar {
+  height: 6px;
+  background: #1e293b;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.strength-fill {
+  height: 100%;
+  width: 0%;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+.strength small {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  color: #9ca3af;
+}
+
+#error {
+  color: #f87171;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: #2563eb;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
