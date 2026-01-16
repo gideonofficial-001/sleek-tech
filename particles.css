@@ -1,28 +1,20 @@
 #particles {
   position: fixed;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
-  z-index: -1;
 }
-
 .particle {
   position: absolute;
-  bottom: -10px;
-  width: 6px;
-  height: 6px;
-  background: rgba(56, 189, 248, 0.8);
+  width: 4px;
+  height: 4px;
+  background: #4ea8ff;
   border-radius: 50%;
-  filter: blur(1px);
+  opacity: 0.7;
   animation: floatUp linear infinite;
 }
 
 @keyframes floatUp {
-  from {
-    transform: translateY(0) scale(1);
-    opacity: 1;
-  }
-  to {
-    transform: translateY(-110vh) scale(0.3);
-    opacity: 0;
-  }
+  from { transform: translateY(100vh); }
+  to { transform: translateY(-10vh); }
 }
