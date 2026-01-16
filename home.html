@@ -1,53 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Sleek Tech | Dashboard</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link rel="stylesheet" href="base.css">
-  <link rel="stylesheet" href="particles.css">
-  <link rel="stylesheet" href="home.css">
+  <meta charset="UTF-8" />
+  <title>Home | Sleek Tech</title>
+  <link rel="stylesheet" href="home.css" />
+  <link rel="stylesheet" href="base.css" />
+  <link rel="stylesheet" href="particles.css"/>
 </head>
+
 <body>
 
-<div id="particles"></div>
+  <!-- Particles -->
+  <div id="particles"></div>
 
-<div class="dashboard card">
-  <h1>Welcome, <span id="username">User</span> 👋</h1>
-  <p>You are logged in to Sleek Tech Incorporated.</p>
+  <!-- Header -->
+  <header class="topbar">
+    <div class="logo">Sleek<span>Tech</span></div>
 
-  <button id="logout">Logout</button>
-</div>
+    <div class="user-area">
+      <span id="username">Loading...</span>
+      <img src="avatar.png" class="avatar" />
+    </div>
+  </header>
 
-<script type="module">
-  import { auth, db } from "./firebase.js";
-  import { onAuthStateChanged, signOut }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { doc, getDoc }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <!-- App Layout -->
+  <div class="app">
 
-  const usernameEl = document.getElementById("username");
-  const logoutBtn = document.getElementById("logout");
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <button class="icon-btn" title="Dashboard">🏠</button>
+      <button class="icon-btn" title="Services">🛠</button>
+      <button class="icon-btn" title="Projects">📁</button>
+      <button class="icon-btn" title="Settings">⚙️</button>
+      <button class="icon-btn logout" title="Logout">⏻</button>
+    </aside>
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      window.location.href = "login.html";
-      return;
-    }
+    <!-- Main Content -->
+    <main class="content">
+      <h1>Welcome back 👋</h1>
+      <p>Select a service from the sidebar to continue.</p>
 
-    const snap = await getDoc(doc(db, "users", user.uid));
-    if (snap.exists()) {
-      usernameEl.textContent = snap.data().username;
-    }
-  });
+      <div class="cards">
+        <div class="card">SLEEK MD MINI BOT</div>
+        <div class="card">VPS DEALS</div>
+        <div class="card">PREMIUM APKS</div>
+      </div>
+    </main>
 
-  logoutBtn.addEventListener("click", async () => {
-    await signOut(auth);
-    window.location.href = "login.html";
-  });
-</script>
+  </div>
 
-<script src="particles.js"></script>
+  <script type="module" src="home.js"></script>
+  <script src="particles.js"></script>
+
 </body>
 </html>
