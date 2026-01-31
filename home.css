@@ -62,8 +62,10 @@ body {
 /* Content */
 .content {
   flex: 1;
-  padding: 30px;
-  overflow-y: auto;
+  padding: 32px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .cards {
