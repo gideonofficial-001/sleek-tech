@@ -82,3 +82,15 @@ body {
   border: 1px solid #1f2233;
   backdrop-filter: blur(8px);
 }
+
+.material-symbols-outlined {
+  color: #e74c3c; /* Change the icon color to red */
+  font-size: 24px; /* Change the size */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.material-symbols-outlined:hover {
+  transform: scale(1.2); /* Makes the icon pop when hovered */
+  color: #c0392b;
+}
